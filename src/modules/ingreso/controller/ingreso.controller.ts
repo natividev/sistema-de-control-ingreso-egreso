@@ -7,7 +7,7 @@ export class IngresoController {
   constructor(private readonly _ingresoService: IngresoService) {}
 
   @Post()
-  create(@Body() createIngresoDto: CreateIngresoDto) {
-    return createIngresoDto;
+  crearIngreso(@Body() createIngresoDto: CreateIngresoDto) {
+    return this._ingresoService.crearIngreso(createIngresoDto);
   }
 }
