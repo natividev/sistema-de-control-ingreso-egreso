@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model tipo_ingreso {
+  id      Int       @id @default(autoincrement())
+  nombre  String
+  ingreso ingreso[]
+  egreso  egreso[]
+}
+
+model tipo_control {
+  id      Int       @id @default(autoincrement())
+  nombre  String
+  ingreso ingreso[]
+  egreso  egreso[]
+}
+
+model tipo_aportacion {
+  id      Int       @id @default(autoincrement())
+  nombre  String
+  ingreso ingreso[]
+  egreso  egreso[]
+}
+
+model ingreso {
+  id                 Int      @id @default(autoincrement())
+  nombre_actividad   String
+  fecha_actividad    DateTime
+  cantidad           Float
+  razon              String?
+  dui                String?
+  no_transaccion     String?
+  observaciones      String?
+  fk_tipo_ingreso    Int
+  fk_tipo_control    Int
+  fk_tipo_aportacion Int
+
+  tipo_ingreso    tipo_ingreso    @relation(fields: [fk_tipo_ingreso], references: [id])
+  tipo_control    tipo_control    @relation(fields: [fk_tipo_control], references: [id])
+  tipo_aportacion tipo_aportacion @relation(fields: [fk_tipo_aportacion], references: [id])
+
+  @@index([fk_tipo_ingreso], name: "ingreso_tipo_ingreso")
+  @@index([fk_tipo_control], name: "ingreso_tipo_control")
+  @@index([fk_tipo_aportacion], name: "ingreso_tipo_aportacion")
+  @@index([fecha_actividad], name: "ingreso_fecha_actividad")
+  @@index([cantidad], name: "ingreso_cantidad")
+}
+
+model egreso {
+  id                 Int      @id @default(autoincrement())
+  nombre_actividad   String
+  fecha_actividad    DateTime
+  cantidad           Float
+  razon              String?
+  dui                String?
+  no_transaccion     String?
+  observaciones      String?
+  fk_tipo_ingreso    Int
+  fk_tipo_control    Int
+  fk_tipo_aportacion Int
+
+  tipo_ingreso    tipo_ingreso    @relation(fields: [fk_tipo_ingreso], references: [id])
+  tipo_control    tipo_control    @relation(fields: [fk_tipo_control], references: [id])
+  tipo_aportacion tipo_aportacion @relation(fields: [fk_tipo_aportacion], references: [id])
+
+  @@index([fk_tipo_ingreso], name: "egreso_tipo_ingreso")
+  @@index([fk_tipo_control], name: "egreso_tipo_control")
+  @@index([fk_tipo_aportacion], name: "egreso_tipo_aportacion")
+  @@index([fecha_actividad], name: "egreso_fecha_actividad")
+  @@index([cantidad], name: "egreso_cantidad")
+}
+
+model total_ingreso {
+  id    Int   @id @default(autoincrement())
+  monto Float
+}
+
+model total_egreso {
+  id    Int   @id @default(autoincrement())
+  monto Float
+}
+
+enum TipoLog {
+  INGRESO
+  EGRESO
+}
+
+model total_log {
+  id             Int      @id @default(autoincrement())
+  fecha          DateTime @default(now())
+  monto_anterior Float
+  monto_nuevo    Float
+  tipo           TipoLog
+}
