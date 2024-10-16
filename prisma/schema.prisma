@@ -108,3 +108,31 @@ model total_log {
   @@index([fk_ingreso], name: "total_log_fk_ingreso")
   @@index([fk_egreso], name: "total_log_fk_egreso")
 }
+
+model afiliados {
+  id                Int                 @id @default(autoincrement())
+  descripcion       String
+  registro_afiliado registro_afiliado[]
+}
+
+model tipo_documento {
+  id                Int                 @id @default(autoincrement())
+  descripcion       String
+  registro_afiliado registro_afiliado[]
+}
+
+model registro_afiliado {
+  id               Int      @id @default(autoincrement())
+  razon_social     String
+  numero_documento String?
+  fecha            DateTime
+  correo           String?
+  telefono         String?
+  observaciones    String?
+
+  fk_afiliado       Int
+  fk_tipo_documento Int
+
+  afiliado  afiliados      @relation(fields: [fk_afiliado], references: [id])
+  documento tipo_documento @relation(fields: [fk_tipo_documento], references: [id])
+}
