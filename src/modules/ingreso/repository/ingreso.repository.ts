@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateIngresoDto } from '../dto/create-ingreso.dto';
 import { PrismaService } from 'src/prisma.service';
+import { TipoLog } from '@prisma/client';
 
 @Injectable()
 export class IngresoRepository {
@@ -55,7 +56,7 @@ export class IngresoRepository {
         fecha: new Date(),
         monto_anterior: montoAnterior,
         monto_nuevo: montoNuevo,
-        tipo: 'INGRESO',
+        tipo: TipoLog.INGRESO,
         fk_ingreso: nuevoIngreso.id,
       },
     });
