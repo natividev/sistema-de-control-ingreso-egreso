@@ -56,6 +56,7 @@ export class IngresoRepository {
         monto_anterior: montoAnterior,
         monto_nuevo: montoNuevo,
         tipo: 'INGRESO',
+        fk_ingreso: nuevoIngreso.id,
       },
     });
 
