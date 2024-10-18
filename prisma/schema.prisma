@@ -10,6 +10,7 @@ datasource db {
 model tipo_ingreso {
   id      Int       @id @default(autoincrement())
   nombre  String
+  active  Boolean   @default(true)
   ingreso ingreso[]
   egreso  egreso[]
 }
@@ -17,6 +18,7 @@ model tipo_ingreso {
 model tipo_control {
   id      Int       @id @default(autoincrement())
   nombre  String
+  active  Boolean   @default(true)
   ingreso ingreso[]
   egreso  egreso[]
 }
@@ -24,6 +26,7 @@ model tipo_control {
 model tipo_aportacion {
   id      Int       @id @default(autoincrement())
   nombre  String
+  active  Boolean   @default(true)
   ingreso ingreso[]
   egreso  egreso[]
 }
@@ -40,6 +43,7 @@ model ingreso {
   fk_tipo_ingreso    Int
   fk_tipo_control    Int
   fk_tipo_aportacion Int
+  active             Boolean @default(true)
 
   tipo_ingreso    tipo_ingreso    @relation(fields: [fk_tipo_ingreso], references: [id])
   tipo_control    tipo_control    @relation(fields: [fk_tipo_control], references: [id])
@@ -65,6 +69,7 @@ model egreso {
   fk_tipo_ingreso    Int
   fk_tipo_control    Int
   fk_tipo_aportacion Int
+  active             Boolean @default(true)
 
   tipo_ingreso    tipo_ingreso    @relation(fields: [fk_tipo_ingreso], references: [id])
   tipo_control    tipo_control    @relation(fields: [fk_tipo_control], references: [id])
@@ -112,12 +117,14 @@ model total_log {
 model afiliados {
   id                Int                 @id @default(autoincrement())
   descripcion       String
+  active            Boolean             @default(true)
   registro_afiliado registro_afiliado[]
 }
 
 model tipo_documento {
   id                Int                 @id @default(autoincrement())
   descripcion       String
+  active            Boolean             @default(true)
   registro_afiliado registro_afiliado[]
 }
 
@@ -132,6 +139,7 @@ model registro_afiliado {
 
   fk_afiliado       Int
   fk_tipo_documento Int
+  active            Boolean @default(true)
 
   afiliado  afiliados      @relation(fields: [fk_afiliado], references: [id])
   documento tipo_documento @relation(fields: [fk_tipo_documento], references: [id])
