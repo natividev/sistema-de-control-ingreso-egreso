@@ -6,9 +6,10 @@ import { TipoIngresoModule } from './modules/tipo-ingreso/tipo-ingreso.module';
 import { TipoControlModule } from './modules/tipo-control/tipo-control.module';
 import { TipoAportacionModule } from './modules/tipo-aportacion/tipo-aportacion.module';
 import { EgresoModule } from './modules/egreso/egreso.module';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @Module({
-  imports: [IngresoModule, TipoIngresoModule, TipoControlModule, TipoAportacionModule, EgresoModule],
+  imports: [IngresoModule, TipoIngresoModule, TipoControlModule, TipoAportacionModule, EgresoModule, ReportsModule],
   controllers: [AppController],
   providers: [AppService],
 })
