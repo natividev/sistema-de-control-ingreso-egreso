@@ -12,7 +12,6 @@ model tipo_ingreso {
   nombre  String
   active  Boolean   @default(true)
   ingreso ingreso[]
-  egreso  egreso[]
 }
 
 model tipo_control {
@@ -43,7 +42,7 @@ model ingreso {
   fk_tipo_ingreso    Int
   fk_tipo_control    Int
   fk_tipo_aportacion Int
-  active             Boolean @default(true)
+  active             Boolean  @default(true)
 
   tipo_ingreso    tipo_ingreso    @relation(fields: [fk_tipo_ingreso], references: [id])
   tipo_control    tipo_control    @relation(fields: [fk_tipo_control], references: [id])
@@ -66,17 +65,14 @@ model egreso {
   dui                String?
   no_transaccion     String?
   observaciones      String?
-  fk_tipo_ingreso    Int
   fk_tipo_control    Int
   fk_tipo_aportacion Int
-  active             Boolean @default(true)
+  active             Boolean  @default(true)
 
-  tipo_ingreso    tipo_ingreso    @relation(fields: [fk_tipo_ingreso], references: [id])
   tipo_control    tipo_control    @relation(fields: [fk_tipo_control], references: [id])
   tipo_aportacion tipo_aportacion @relation(fields: [fk_tipo_aportacion], references: [id])
   total_log       total_log[]
 
-  @@index([fk_tipo_ingreso], name: "egreso_tipo_ingreso")
   @@index([fk_tipo_control], name: "egreso_tipo_control")
   @@index([fk_tipo_aportacion], name: "egreso_tipo_aportacion")
   @@index([fecha_actividad], name: "egreso_fecha_actividad")
