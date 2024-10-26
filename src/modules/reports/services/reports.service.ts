@@ -28,6 +28,8 @@ export class ReportsService {
         total: currencyAdapter.create(total).format(),
       };
 
+      console.log(JSON.stringify(payload, null, 2));
+
       const buffer = await this._carboneService.renderPDFCarbone(
         payload,
         'informe-ingresos-historico.odt',
