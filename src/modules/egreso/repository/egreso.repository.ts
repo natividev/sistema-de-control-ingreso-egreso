@@ -34,6 +34,12 @@ export class EgresoRepository {
       });
 
       const totalEgreso = await tx.total_egreso.findFirst();
+      const totalIngreso = await tx.total_ingreso.findFirst();
+
+      if (cantidad >= totalIngreso.monto) {
+        throw new Error('No se puede ingresar más que el monto total');
+      }
+
       const montoAnteriorEgreso = totalEgreso?.monto || 0;
       const montoNuevoEgreso = montoAnteriorEgreso + nuevoEgreso.cantidad;
 
@@ -42,8 +48,6 @@ export class EgresoRepository {
         update: { monto: montoNuevoEgreso },
         create: { monto: nuevoEgreso.cantidad },
       });
-
-      const totalIngreso = await tx.total_ingreso.findFirst();
 
       const montoNuevoIngreso = totalIngreso.monto - cantidad;
 
