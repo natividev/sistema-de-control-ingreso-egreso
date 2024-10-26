@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { IReportGeneralIngresoEgreso, IReportIngreso } from '../interfaces';
+import {
+  IReporteEgreso,
+  IReportGeneralIngresoEgreso,
+  IReportIngreso,
+} from '../interfaces';
 
 @Injectable()
 export class ReportsRepository {
@@ -31,6 +35,27 @@ export class ReportsRepository {
     return this._prisma.$queryRaw<IReportIngreso[]>(query);
   }
 
+  async reportEgresoHistorico(): Promise<IReporteEgreso[]> {
+    const query = Prisma.sql`SELECT
+        e.nombre_actividad as nombreActividad,
+        DATE_FORMAT(e.fecha_actividad, '%Y-%m-%d') as fechaActividad,
+        e.cantidad,
+        e.razon,
+        e.dui,
+        e.no_transaccion as noTransaccion,
+        e.observaciones,
+        ta.nombre as tipoAportacion,
+        tc.nombre as tipoControl
+      FROM
+        egreso e
+      INNER JOIN tipo_aportacion ta ON
+        ta.id = e.fk_tipo_aportacion
+      INNER JOIN tipo_control tc ON
+        tc.id = e.fk_tipo_control;`;
+
+    return this._prisma.$queryRaw<IReportIngreso[]>(query);
+  }
+
   async reportGeneralIngresoEgreso(): Promise<IReportGeneralIngresoEgreso[]> {
     const query = Prisma.sql`SELECT
         tl.id,
@@ -38,7 +63,6 @@ export class ReportsRepository {
         tl.monto_anterior AS montoAnterior,
         tl.monto_nuevo AS montoNuevo,
         tl.tipo,
-        tl.monto_ingreso AS montoIngreso,
         i.nombre_actividad AS actividadIngreso,
         e.nombre_actividad  AS actividadEgreso
       from

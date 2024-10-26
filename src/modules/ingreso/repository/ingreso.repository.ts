@@ -50,7 +50,7 @@ export class IngresoRepository {
         monto: nuevoIngreso.cantidad,
       },
     });
-    console.log(`${totalIngreso?.monto} ingresadoooooo`);
+
     await this._prisma.total_log.create({
       data: {
         monto_ingreso: cantidad,

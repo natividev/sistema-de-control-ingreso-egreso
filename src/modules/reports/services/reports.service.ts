@@ -28,11 +28,40 @@ export class ReportsService {
         total: currencyAdapter.create(total).format(),
       };
 
-      console.log(JSON.stringify(payload, null, 2));
-
       const buffer = await this._carboneService.renderPDFCarbone(
         payload,
         'informe-ingresos-historico.odt',
+        'pdf',
+      );
+
+      return buffer;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al generar reporte ingreso');
+    }
+  }
+
+  async reportEgresoHistorico(): Promise<Buffer> {
+    try {
+      let total = 0;
+      const ingreso = await this._reportsRepository.reportEgresoHistorico();
+
+      const data = ingreso.map((ingreso) => {
+        total += ingreso.cantidad;
+        return {
+          ...ingreso,
+          cantidad: currencyAdapter.create(ingreso.cantidad).format(),
+        };
+      });
+
+      const payload = {
+        ingreso: data,
+        total: currencyAdapter.create(total).format(),
+      };
+
+      const buffer = await this._carboneService.renderPDFCarbone(
+        payload,
+        'informe-egresos-historico.odt',
         'pdf',
       );
 

@@ -20,6 +20,20 @@ export class ReportsController {
     return pdfBuffer;
   }
 
+  @Get('egreso')
+  async reportEgreso(@Res() res: Response) {
+    const pdfBuffer = await this.reportsService.reportEgresoHistorico();
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=informe-egresos-historico.pdf',
+    );
+    res.send(pdfBuffer);
+    res.end();
+    return pdfBuffer;
+  }
+
   @Get('ingreso-egreso')
   async reportIngresoEgreso(@Res() res: Response) {
     const pdfBuffer = await this.reportsService.reportGeneralIngresoEgreso();

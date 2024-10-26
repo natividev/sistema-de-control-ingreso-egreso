@@ -10,3 +10,5 @@ export interface IReportIngreso {
   tipoAportacion: string;
   tipoControl: string;
 }
+
+export type IReporteEgreso = Omit<IReportIngreso, 'tipoIngreso'>;
