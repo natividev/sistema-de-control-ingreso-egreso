@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateEgresoDto } from '../dto/create-egreso.dto';
 import { TipoLog } from '@prisma/client';
@@ -37,7 +37,9 @@ export class EgresoRepository {
       const totalIngreso = await tx.total_ingreso.findFirst();
 
       if (cantidad >= totalIngreso.monto) {
-        throw new Error('No se puede ingresar más que el monto total');
+        throw new UnprocessableEntityException(
+          'El ingreso no puede ser mayor a la cantidad ingresada',
+        );
       }
 
       const montoAnteriorEgreso = totalEgreso?.monto || 0;

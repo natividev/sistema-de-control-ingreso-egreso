@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CreateEgresoDto } from '../dto/create-egreso.dto';
 import { EgresoRepository } from '../repository/egreso.repository';
 
@@ -11,7 +11,10 @@ export class EgresoService {
       return await this._egresoRepository.createEgreso(createEgresoDto);
     } catch (error) {
       console.log(error);
-      throw new Error('Error al crear egreso');
+      if (error instanceof UnprocessableEntityException) {
+        throw error;
+      }
+      throw new Error(`Error al crear egreso: ${error}`);
     }
   }
 }
