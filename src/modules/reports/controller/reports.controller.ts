@@ -19,4 +19,18 @@ export class ReportsController {
     res.end();
     return pdfBuffer;
   }
+
+  @Get('ingreso-egreso')
+  async reportIngresoEgreso() {
+    const pdfBuffer = await this.reportsService.reportGeneralIngresoEgreso();
+
+    // res.setHeader('Content-Type', 'application/pdf');
+    // res.setHeader(
+    //   'Content-Disposition',
+    //   'attachment; filename=informe-ingresos-egresos.pdf',
+    // );
+    // res.send(pdfBuffer);
+    // res.end();
+    return pdfBuffer;
+  }
 }

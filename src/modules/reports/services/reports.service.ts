@@ -40,4 +40,40 @@ export class ReportsService {
       throw new Error('Error al generar reporte ingreso');
     }
   }
+
+  async reportGeneralIngresoEgreso() {
+    try {
+      let totalIngreso = 0;
+      let totalEgreso = 0;
+      const ingreso =
+        await this._reportsRepository.reportGeneralIngresoEgreso();
+
+      const transformData = ingreso.map((ingreso) => {
+        if (ingreso.tipo === 'INGRESO') {
+          totalIngreso += ingreso.montoNuevo;
+        }
+
+        if (ingreso.tipo === 'EGRESO') {
+          totalEgreso += ingreso.montoNuevo;
+        }
+
+        return {
+          ...ingreso,
+          montoNuevo: currencyAdapter.create(ingreso.montoNuevo).format(),
+          montoAnterior: currencyAdapter.create(ingreso.montoAnterior).format(),
+        };
+      });
+
+      const payload = {
+        data: transformData,
+        totalIngreso: currencyAdapter.create(totalIngreso).format(),
+        totalEgreso: currencyAdapter.create(totalEgreso).format(),
+      };
+
+      return payload;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al generar reporte ingreso');
+    }
+  }
 }

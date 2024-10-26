@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { IReportIngreso } from '../interfaces/report.ingreso.interface';
+import { IReportGeneralIngresoEgreso, IReportIngreso } from '../interfaces';
 
 @Injectable()
 export class ReportsRepository {
@@ -29,5 +29,24 @@ export class ReportsRepository {
         tc.id = i.fk_tipo_control;`;
 
     return this._prisma.$queryRaw<IReportIngreso[]>(query);
+  }
+
+  async reportGeneralIngresoEgreso(): Promise<IReportGeneralIngresoEgreso[]> {
+    const query = Prisma.sql`SELECT
+        tl.id,
+        DATE_FORMAT(tl.fecha, '%Y-%m-%d') AS fecha,
+        tl.monto_anterior AS montoAnterior,
+        tl.monto_nuevo AS montoNuevo,
+        tl.tipo,
+        i.nombre_actividad AS actividadIngreso,
+        e.nombre_actividad  AS actividadEgreso
+      from
+        total_log tl
+      LEFT JOIN ingreso i ON
+        i.id = tl.fk_ingreso
+      LEFT JOIN egreso e ON
+        e.id = tl.fk_egreso;`;
+
+    return this._prisma.$queryRaw<IReportGeneralIngresoEgreso[]>(query);
   }
 }

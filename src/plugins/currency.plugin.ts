@@ -13,7 +13,7 @@ class CurrencyAdapter implements CurrencyOperations {
 
   create(
     value: number,
-    options: currency.Options = { precision: 4 },
+    options: currency.Options = { precision: 2 },
   ): currency {
     return currency(value, options);
   }

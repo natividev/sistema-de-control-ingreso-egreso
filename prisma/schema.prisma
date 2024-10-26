@@ -97,6 +97,7 @@ enum TipoLog {
 model total_log {
   id             Int      @id @default(autoincrement())
   fecha          DateTime @default(now())
+  monto_ingreso  Float    @default(0)
   monto_anterior Float
   monto_nuevo    Float
   tipo           TipoLog
