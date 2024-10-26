@@ -6,4 +6,5 @@ export interface IReportGeneralIngresoEgreso {
   tipo: string;
   actividadIngreso: null | string;
   actividadEgreso: null | string;
+  montoIngreso: number;
 }

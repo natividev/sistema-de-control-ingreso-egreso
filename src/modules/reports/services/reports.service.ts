@@ -50,17 +50,18 @@ export class ReportsService {
 
       const transformData = ingreso.map((ingreso) => {
         if (ingreso.tipo === 'INGRESO') {
-          totalIngreso += ingreso.montoNuevo;
+          totalIngreso += ingreso.montoIngreso;
         }
 
         if (ingreso.tipo === 'EGRESO') {
-          totalEgreso += ingreso.montoNuevo;
+          totalEgreso += ingreso.montoIngreso;
         }
 
         return {
           ...ingreso,
           montoNuevo: currencyAdapter.create(ingreso.montoNuevo).format(),
           montoAnterior: currencyAdapter.create(ingreso.montoAnterior).format(),
+          montoIngreso: currencyAdapter.create(ingreso.montoIngreso).format(),
         };
       });
 

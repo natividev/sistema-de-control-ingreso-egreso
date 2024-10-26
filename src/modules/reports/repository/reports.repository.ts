@@ -38,6 +38,7 @@ export class ReportsRepository {
         tl.monto_anterior AS montoAnterior,
         tl.monto_nuevo AS montoNuevo,
         tl.tipo,
+        tl.monto_ingreso AS montoIngreso,
         i.nombre_actividad AS actividadIngreso,
         e.nombre_actividad  AS actividadEgreso
       from
