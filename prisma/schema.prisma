@@ -120,7 +120,7 @@ model afiliados {
 
 model tipo_documento {
   id                Int                 @id @default(autoincrement())
-  descripcion       String
+  nombre            String
   active            Boolean             @default(true)
   registro_afiliado registro_afiliado[]
 }
