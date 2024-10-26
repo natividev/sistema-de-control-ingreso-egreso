@@ -41,7 +41,7 @@ export class ReportsService {
     }
   }
 
-  async reportGeneralIngresoEgreso() {
+  async reportGeneralIngresoEgreso(): Promise<Buffer> {
     try {
       let totalIngreso = 0;
       let totalEgreso = 0;
@@ -71,7 +71,13 @@ export class ReportsService {
         totalEgreso: currencyAdapter.create(totalEgreso).format(),
       };
 
-      return payload;
+      const buffer = await this._carboneService.renderPDFCarbone(
+        payload,
+        'informe-general-ingresos-egresos.odt',
+        'pdf',
+      );
+
+      return buffer;
     } catch (error) {
       console.log(error);
       throw new Error('Error al generar reporte ingreso');
