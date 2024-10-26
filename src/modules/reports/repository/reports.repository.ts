@@ -62,6 +62,7 @@ export class ReportsRepository {
         DATE_FORMAT(tl.fecha, '%Y-%m-%d') AS fecha,
         tl.monto_anterior AS montoAnterior,
         tl.monto_nuevo AS montoNuevo,
+        tl.monto_ingreso AS montoIngreso,
         tl.tipo,
         i.nombre_actividad AS actividadIngreso,
         e.nombre_actividad  AS actividadEgreso
