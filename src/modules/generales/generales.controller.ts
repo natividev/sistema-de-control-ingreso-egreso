@@ -9,4 +9,14 @@ export class GeneralesController {
   tipoDocumento() {
     return this.generalesService.tipoDocumento();
   }
+
+  @Get('generar')
+  async generar() {
+    return await this.generalesService.generate();
+  }
+
+  @Get('dashboard')
+  async dashboard() {
+    return await this.generalesService.dashboard();
+  }
 }

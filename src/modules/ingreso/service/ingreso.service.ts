@@ -8,7 +8,11 @@ export class IngresoService {
 
   async crearIngreso(ingreso: CreateIngresoDto) {
     try {
-      return await this._ingresoRepository.crearIngreso(ingreso);
+      await this._ingresoRepository.crearIngreso(ingreso);
+
+      return {
+        message: 'Ingreso creado correctamente',
+      };
     } catch (error) {
       console.log(error);
       throw new Error('Error al crear ingreso');

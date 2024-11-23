@@ -4,12 +4,14 @@ import 'dotenv/config';
 interface EnvVars {
   PORT: number;
   DATABASE_URL: string;
+  API_KEY_GOOGLE_GEMINI: string;
 }
 
 const envsSchema = joi
   .object({
     PORT: joi.number().required(),
     DATABASE_URL: joi.string().required(),
+    API_KEY_GOOGLE_GEMINI: joi.string().required(),
   })
   .unknown(true);
 
@@ -24,4 +26,5 @@ const envsVars: EnvVars = value;
 export const envs = {
   port: envsVars.PORT,
   databaseUrl: envsVars.DATABASE_URL,
+  apiKeyGoogleGemini: envsVars.API_KEY_GOOGLE_GEMINI,
 };

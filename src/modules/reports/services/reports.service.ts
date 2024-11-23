@@ -76,6 +76,7 @@ export class ReportsService {
     try {
       let totalIngreso = 0;
       let totalEgreso = 0;
+      let totalGeneral = 0;
       const ingreso =
         await this._reportsRepository.reportGeneralIngresoEgreso();
 
@@ -87,6 +88,8 @@ export class ReportsService {
         if (ingreso.tipo === 'EGRESO') {
           totalEgreso += ingreso.montoIngreso;
         }
+
+        totalGeneral = totalIngreso - Math.abs(totalEgreso);
 
         return {
           ...ingreso,
@@ -100,6 +103,7 @@ export class ReportsService {
         data: transformData,
         totalIngreso: currencyAdapter.create(totalIngreso).format(),
         totalEgreso: currencyAdapter.create(totalEgreso).format(),
+        totalGeneral: currencyAdapter.create(totalGeneral).format(),
       };
 
       const buffer = await this._carboneService.renderPDFCarbone(
