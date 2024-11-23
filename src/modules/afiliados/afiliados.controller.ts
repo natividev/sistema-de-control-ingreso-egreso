@@ -25,6 +25,16 @@ export class AfiliadosController {
     return this.afiliadosService.findAll();
   }
 
+  @Get('registro-afiliados')
+  findAllAfiliados() {
+    return this.afiliadosService.findAllAfiliados();
+  }
+
+  @Get('tipo-afiliados/:id')
+  findTipoAfiliados(@Param('id') id: number) {
+    return this.afiliadosService.findTipoAfiliados(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.afiliadosService.findOne(+id);

@@ -49,6 +49,23 @@ export class AfiliadosService {
     return await this.prisma.afiliados.findMany();
   }
 
+  async findAllAfiliados() {
+    return await this.prisma.registro_afiliado.findMany();
+  }
+
+  async findTipoAfiliados(tipoAfiliado: number) {
+    return await this.prisma.registro_afiliado.findMany({
+      where: {
+        fk_afiliado: tipoAfiliado,
+      },
+      select: {
+        id: true,
+        razon_social: true,
+        numero_documento: true,
+      },
+    });
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} afiliado`;
   }

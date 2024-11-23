@@ -1,14 +1,15 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { ReportsService } from '../services/reports.service';
 import { Response } from 'express';
+import { ParamsDto } from '../dto/params.dto';
 
 @Controller('reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
 
   @Get('ingreso')
-  async reportIngreso(@Res() res: Response) {
-    const pdfBuffer = await this.reportsService.reportIngresoHistorico();
+  async reportIngreso(@Res() res: Response, @Query() params: ParamsDto) {
+    const pdfBuffer = await this.reportsService.reportIngresoHistorico(params);
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader(
@@ -21,8 +22,8 @@ export class ReportsController {
   }
 
   @Get('egreso')
-  async reportEgreso(@Res() res: Response) {
-    const pdfBuffer = await this.reportsService.reportEgresoHistorico();
+  async reportEgreso(@Res() res: Response, @Query() params: ParamsDto) {
+    const pdfBuffer = await this.reportsService.reportEgresoHistorico(params);
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader(
@@ -35,8 +36,9 @@ export class ReportsController {
   }
 
   @Get('ingreso-egreso')
-  async reportIngresoEgreso(@Res() res: Response) {
-    const pdfBuffer = await this.reportsService.reportGeneralIngresoEgreso();
+  async reportIngresoEgreso(@Res() res: Response, @Query() params: ParamsDto) {
+    const pdfBuffer =
+      await this.reportsService.reportGeneralIngresoEgreso(params);
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader(

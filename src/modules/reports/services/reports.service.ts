@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ReportsRepository } from '../repository/reports.repository';
 import { currencyAdapter } from 'src/plugins';
 import { CarboneService } from 'src/modules/carbone/carbone.service';
+import { ParamsDto } from '../dto/params.dto';
 
 @Injectable()
 export class ReportsService {
@@ -10,10 +11,11 @@ export class ReportsService {
     private readonly _carboneService: CarboneService,
   ) {}
 
-  async reportIngresoHistorico(): Promise<Buffer> {
+  async reportIngresoHistorico(params: ParamsDto): Promise<Buffer> {
     try {
       let total = 0;
-      const ingreso = await this._reportsRepository.reportIngresoHistorico();
+      const ingreso =
+        await this._reportsRepository.reportIngresoHistorico(params);
 
       const data = ingreso.map((ingreso) => {
         total += ingreso.cantidad;
@@ -41,10 +43,11 @@ export class ReportsService {
     }
   }
 
-  async reportEgresoHistorico(): Promise<Buffer> {
+  async reportEgresoHistorico(params: ParamsDto): Promise<Buffer> {
     try {
       let total = 0;
-      const ingreso = await this._reportsRepository.reportEgresoHistorico();
+      const ingreso =
+        await this._reportsRepository.reportEgresoHistorico(params);
 
       const data = ingreso.map((ingreso) => {
         total += ingreso.cantidad;
@@ -72,13 +75,13 @@ export class ReportsService {
     }
   }
 
-  async reportGeneralIngresoEgreso(): Promise<Buffer> {
+  async reportGeneralIngresoEgreso(params: ParamsDto): Promise<Buffer> {
     try {
       let totalIngreso = 0;
       let totalEgreso = 0;
       let totalGeneral = 0;
       const ingreso =
-        await this._reportsRepository.reportGeneralIngresoEgreso();
+        await this._reportsRepository.reportGeneralIngresoEgreso(params);
 
       const transformData = ingreso.map((ingreso) => {
         if (ingreso.tipo === 'INGRESO') {
