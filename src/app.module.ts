@@ -8,9 +8,10 @@ import { TipoAportacionModule } from './modules/tipo-aportacion/tipo-aportacion.
 import { EgresoModule } from './modules/egreso/egreso.module';
 import { ReportsModule } from './modules/reports/reports.module';
 import { GeneralesModule } from './modules/generales/generales.module';
+import { AfiliadosModule } from './modules/afiliados/afiliados.module';
 
 @Module({
-  imports: [IngresoModule, TipoIngresoModule, TipoControlModule, TipoAportacionModule, EgresoModule, ReportsModule, GeneralesModule],
+  imports: [IngresoModule, TipoIngresoModule, TipoControlModule, TipoAportacionModule, EgresoModule, ReportsModule, GeneralesModule, AfiliadosModule],
   controllers: [AppController],
   providers: [AppService],
 })
