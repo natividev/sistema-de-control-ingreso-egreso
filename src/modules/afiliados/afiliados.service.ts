@@ -62,6 +62,12 @@ export class AfiliadosService {
         id: true,
         razon_social: true,
         numero_documento: true,
+        fk_tipo_documento: true,
+        documento: {
+          select: {
+            nombre: true,
+          },
+        },
       },
     });
   }

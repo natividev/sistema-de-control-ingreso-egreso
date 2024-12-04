@@ -11,7 +11,16 @@ import { GeneralesModule } from './modules/generales/generales.module';
 import { AfiliadosModule } from './modules/afiliados/afiliados.module';
 
 @Module({
-  imports: [IngresoModule, TipoIngresoModule, TipoControlModule, TipoAportacionModule, EgresoModule, ReportsModule, GeneralesModule, AfiliadosModule],
+  imports: [
+    IngresoModule,
+    TipoIngresoModule,
+    TipoControlModule,
+    TipoAportacionModule,
+    EgresoModule,
+    ReportsModule,
+    GeneralesModule,
+    AfiliadosModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
