@@ -30,7 +30,7 @@ export class ReportsRepository {
         DATE_FORMAT(i.fecha_actividad, '%Y-%m-%d') AS fechaActividad,
         i.cantidad,
         ra.razon_social as razon,
-        i.dui,
+        ra.numero_documento as dui,
         i.no_transaccion AS noTransaccion,
         i.observaciones,
         ti.nombre AS tipoIngreso,
@@ -45,7 +45,7 @@ export class ReportsRepository {
       ${whereConditions};
     `;
 
-    return this._prisma.$queryRaw<IReportIngreso[]>(query);
+    return await this._prisma.$queryRaw<IReportIngreso[]>(query);
   }
 
   async reportEgresoHistorico({
@@ -65,7 +65,7 @@ export class ReportsRepository {
         DATE_FORMAT(e.fecha_actividad, '%Y-%m-%d') as fechaActividad,
         e.cantidad,
         ra.razon_social as razon,
-        e.dui,
+        ra.numero_documento as dui,
         e.no_transaccion as noTransaccion,
         e.observaciones,
         ta.nombre as tipoAportacion,
@@ -80,7 +80,7 @@ export class ReportsRepository {
         ra ON ra.id = e.id_registro_afiliado
       ${whereConditions};`;
 
-    return this._prisma.$queryRaw<IReportIngreso[]>(query);
+    return await this._prisma.$queryRaw<IReportIngreso[]>(query);
   }
 
   async reportGeneralIngresoEgreso({
@@ -115,6 +115,6 @@ export class ReportsRepository {
         e.id = tl.fk_egreso
       ${whereConditions};`;
 
-    return this._prisma.$queryRaw<IReportGeneralIngresoEgreso[]>(query);
+    return await this._prisma.$queryRaw<IReportGeneralIngresoEgreso[]>(query);
   }
 }
