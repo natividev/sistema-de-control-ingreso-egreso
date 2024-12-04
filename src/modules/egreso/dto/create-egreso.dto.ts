@@ -25,10 +25,6 @@ export class CreateEgresoDto {
 
   @IsOptional()
   @IsString()
-  dui?: string;
-
-  @IsOptional()
-  @IsString()
   noTransaccion?: string;
 
   @IsOptional()

@@ -1,4 +1,4 @@
-import { Injectable, Param } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import {
@@ -29,7 +29,7 @@ export class ReportsRepository {
         i.nombre_actividad AS nombreActividad,
         DATE_FORMAT(i.fecha_actividad, '%Y-%m-%d') AS fechaActividad,
         i.cantidad,
-        i.razon,
+        ra.razon_social as razon,
         i.dui,
         i.no_transaccion AS noTransaccion,
         i.observaciones,
@@ -41,6 +41,7 @@ export class ReportsRepository {
       INNER JOIN tipo_ingreso ti ON ti.id = i.fk_tipo_ingreso
       INNER JOIN tipo_aportacion ta ON ta.id = i.fk_tipo_aportacion
       INNER JOIN tipo_control tc ON tc.id = i.fk_tipo_control
+      INNER JOIN registro_afiliado ra ON ra.id = i.id_registro_afiliado
       ${whereConditions};
     `;
 
@@ -63,7 +64,7 @@ export class ReportsRepository {
         e.nombre_actividad as nombreActividad,
         DATE_FORMAT(e.fecha_actividad, '%Y-%m-%d') as fechaActividad,
         e.cantidad,
-        e.razon,
+        ra.razon_social as razon,
         e.dui,
         e.no_transaccion as noTransaccion,
         e.observaciones,
@@ -75,6 +76,8 @@ export class ReportsRepository {
         ta.id = e.fk_tipo_aportacion
       INNER JOIN tipo_control tc ON
         tc.id = e.fk_tipo_control
+      INNER JOIN registro_afiliado
+        ra ON ra.id = e.id_registro_afiliado
       ${whereConditions};`;
 
     return this._prisma.$queryRaw<IReportIngreso[]>(query);

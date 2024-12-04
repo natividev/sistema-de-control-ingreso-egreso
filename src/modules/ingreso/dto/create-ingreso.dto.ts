@@ -26,10 +26,6 @@ export class CreateIngresoDto {
 
   @IsOptional()
   @IsString()
-  dui?: string;
-
-  @IsOptional()
-  @IsString()
   noTransaccion?: string;
 
   @IsOptional()

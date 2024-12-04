@@ -35,9 +35,7 @@ model ingreso {
   nombre_actividad     String
   fecha_actividad      DateTime
   cantidad             Float
-  // razon              String?
   id_registro_afiliado Int
-  dui                  String?
   no_transaccion       String?
   observaciones        String?
   fk_tipo_ingreso      Int
@@ -64,7 +62,6 @@ model egreso {
   fecha_actividad      DateTime
   cantidad             Float
   id_registro_afiliado Int
-  dui                  String?
   no_transaccion       String?
   observaciones        String?
   fk_tipo_control      Int
