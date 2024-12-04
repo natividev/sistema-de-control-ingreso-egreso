@@ -19,9 +19,9 @@ export class CreateEgresoDto {
   @IsNumber()
   cantidad: number;
 
-  @IsOptional()
-  @IsString()
-  razon?: string;
+  @IsNotEmpty()
+  @IsNumber()
+  idAfiliado: number;
 
   @IsOptional()
   @IsString()

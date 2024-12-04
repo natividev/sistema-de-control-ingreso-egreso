@@ -16,7 +16,7 @@ export class EgresoRepository {
     dui,
     noTransaccion,
     observaciones,
-    razon,
+    idAfiliado,
   }: CreateEgresoDto) {
     await this._prisma.$transaction(async (tx) => {
       const nuevoEgreso = await tx.egreso.create({
@@ -24,7 +24,7 @@ export class EgresoRepository {
           nombre_actividad: nombreActividad,
           fecha_actividad: fechaActividad,
           cantidad,
-          razon,
+          id_registro_afiliado: idAfiliado,
           dui,
           no_transaccion: noTransaccion,
           observaciones,

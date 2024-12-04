@@ -17,14 +17,14 @@ export class IngresoRepository {
     dui,
     noTransaccion,
     observaciones,
-    razon,
+    idAfiliado,
   }: CreateIngresoDto) {
     const nuevoIngreso = await this._prisma.ingreso.create({
       data: {
         nombre_actividad: nombreActividad,
         fecha_actividad: fechaActividad,
         cantidad: cantidad,
-        razon: razon,
+        id_registro_afiliado: idAfiliado,
         dui: dui,
         no_transaccion: noTransaccion,
         observaciones: observaciones,

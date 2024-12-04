@@ -31,23 +31,25 @@ model tipo_aportacion {
 }
 
 model ingreso {
-  id                 Int      @id @default(autoincrement())
-  nombre_actividad   String
-  fecha_actividad    DateTime
-  cantidad           Float
-  razon              String?
-  dui                String?
-  no_transaccion     String?
-  observaciones      String?
-  fk_tipo_ingreso    Int
-  fk_tipo_control    Int
-  fk_tipo_aportacion Int
-  active             Boolean  @default(true)
+  id                   Int      @id @default(autoincrement())
+  nombre_actividad     String
+  fecha_actividad      DateTime
+  cantidad             Float
+  // razon              String?
+  id_registro_afiliado Int
+  dui                  String?
+  no_transaccion       String?
+  observaciones        String?
+  fk_tipo_ingreso      Int
+  fk_tipo_control      Int
+  fk_tipo_aportacion   Int
+  active               Boolean  @default(true)
 
-  tipo_ingreso    tipo_ingreso    @relation(fields: [fk_tipo_ingreso], references: [id])
-  tipo_control    tipo_control    @relation(fields: [fk_tipo_control], references: [id])
-  tipo_aportacion tipo_aportacion @relation(fields: [fk_tipo_aportacion], references: [id])
-  total_log       total_log[]
+  tipo_ingreso      tipo_ingreso      @relation(fields: [fk_tipo_ingreso], references: [id])
+  tipo_control      tipo_control      @relation(fields: [fk_tipo_control], references: [id])
+  tipo_aportacion   tipo_aportacion   @relation(fields: [fk_tipo_aportacion], references: [id])
+  registro_afiliado registro_afiliado @relation(fields: [id_registro_afiliado], references: [id])
+  total_log         total_log[]
 
   @@index([fk_tipo_ingreso], name: "ingreso_tipo_ingreso")
   @@index([fk_tipo_control], name: "ingreso_tipo_control")
@@ -57,21 +59,22 @@ model ingreso {
 }
 
 model egreso {
-  id                 Int      @id @default(autoincrement())
-  nombre_actividad   String
-  fecha_actividad    DateTime
-  cantidad           Float
-  razon              String?
-  dui                String?
-  no_transaccion     String?
-  observaciones      String?
-  fk_tipo_control    Int
-  fk_tipo_aportacion Int
-  active             Boolean  @default(true)
+  id                   Int      @id @default(autoincrement())
+  nombre_actividad     String
+  fecha_actividad      DateTime
+  cantidad             Float
+  id_registro_afiliado Int
+  dui                  String?
+  no_transaccion       String?
+  observaciones        String?
+  fk_tipo_control      Int
+  fk_tipo_aportacion   Int
+  active               Boolean  @default(true)
 
-  tipo_control    tipo_control    @relation(fields: [fk_tipo_control], references: [id])
-  tipo_aportacion tipo_aportacion @relation(fields: [fk_tipo_aportacion], references: [id])
-  total_log       total_log[]
+  tipo_control      tipo_control      @relation(fields: [fk_tipo_control], references: [id])
+  tipo_aportacion   tipo_aportacion   @relation(fields: [fk_tipo_aportacion], references: [id])
+  registro_afiliado registro_afiliado @relation(fields: [id_registro_afiliado], references: [id])
+  total_log         total_log[]
 
   @@index([fk_tipo_control], name: "egreso_tipo_control")
   @@index([fk_tipo_aportacion], name: "egreso_tipo_aportacion")
@@ -140,4 +143,6 @@ model registro_afiliado {
 
   afiliado  afiliados      @relation(fields: [fk_afiliado], references: [id])
   documento tipo_documento @relation(fields: [fk_tipo_documento], references: [id])
+  ingreso   ingreso[]
+  egreso    egreso[]
 }
