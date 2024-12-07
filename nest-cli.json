@@ -9,6 +9,13 @@
       "include": "**/templates/*",
       "watchAssets": true,
       "outDir": "dist/"
-      }]
+      },
+      {
+        "include": "**/templates/image/*",
+        "watchAssets": true,
+        "outDir": "dist/"
+      }
+    ]
+      
   }
 }

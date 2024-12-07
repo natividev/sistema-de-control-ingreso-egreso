@@ -3,6 +3,8 @@ import { ReportsRepository } from '../repository/reports.repository';
 import { currencyAdapter } from 'src/plugins';
 import { CarboneService } from 'src/modules/carbone/carbone.service';
 import { ParamsDto } from '../dto/params.dto';
+import * as moment from 'moment';
+import { insertImageToDocument } from 'src/utils/Image-colocar-documentos.document';
 
 @Injectable()
 export class ReportsService {
@@ -28,6 +30,7 @@ export class ReportsService {
       const payload = {
         ingreso: data,
         total: currencyAdapter.create(total).format(),
+        fechaImpresion: moment().format('DD/MM/YYYY HH:mm:ss'),
       };
 
       const buffer = await this._carboneService.renderPDFCarbone(
@@ -36,7 +39,11 @@ export class ReportsService {
         'pdf',
       );
 
-      return buffer;
+      const bufferPDFConImage = await insertImageToDocument(buffer);
+
+      const resultBuffer = bufferPDFConImage;
+
+      return resultBuffer;
     } catch (error) {
       console.log(error);
       throw new Error('Error al generar reporte ingreso');
@@ -60,6 +67,7 @@ export class ReportsService {
       const payload = {
         ingreso: data,
         total: currencyAdapter.create(total).format(),
+        fechaImpresion: moment().format('DD/MM/YYYY HH:mm:ss'),
       };
 
       const buffer = await this._carboneService.renderPDFCarbone(
@@ -68,7 +76,11 @@ export class ReportsService {
         'pdf',
       );
 
-      return buffer;
+      const bufferPDFConImage = await insertImageToDocument(buffer);
+
+      const resultBuffer = bufferPDFConImage;
+
+      return resultBuffer;
     } catch (error) {
       console.log(error);
       throw new Error('Error al generar reporte ingreso');
@@ -107,6 +119,7 @@ export class ReportsService {
         totalIngreso: currencyAdapter.create(totalIngreso).format(),
         totalEgreso: currencyAdapter.create(totalEgreso).format(),
         totalGeneral: currencyAdapter.create(totalGeneral).format(),
+        fechaImpresion: moment().format('DD/MM/YYYY HH:mm:ss'),
       };
 
       const buffer = await this._carboneService.renderPDFCarbone(
@@ -115,7 +128,11 @@ export class ReportsService {
         'pdf',
       );
 
-      return buffer;
+      const bufferPDFConImage = await insertImageToDocument(buffer);
+
+      const resultBuffer = bufferPDFConImage;
+
+      return resultBuffer;
     } catch (error) {
       console.log(error);
       throw new Error('Error al generar reporte ingreso');
