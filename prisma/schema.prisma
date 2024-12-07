@@ -33,7 +33,7 @@ model tipo_aportacion {
 model ingreso {
   id                   Int      @id @default(autoincrement())
   nombre_actividad     String
-  fecha_actividad      DateTime
+  fecha_actividad      DateTime @db.Date
   cantidad             Float
   id_registro_afiliado Int
   no_transaccion       String?
@@ -59,7 +59,7 @@ model ingreso {
 model egreso {
   id                   Int      @id @default(autoincrement())
   nombre_actividad     String
-  fecha_actividad      DateTime
+  fecha_actividad      DateTime @db.Date
   cantidad             Float
   id_registro_afiliado Int
   no_transaccion       String?

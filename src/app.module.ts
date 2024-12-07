@@ -9,6 +9,7 @@ import { EgresoModule } from './modules/egreso/egreso.module';
 import { ReportsModule } from './modules/reports/reports.module';
 import { GeneralesModule } from './modules/generales/generales.module';
 import { AfiliadosModule } from './modules/afiliados/afiliados.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AfiliadosModule } from './modules/afiliados/afiliados.module';
     ReportsModule,
     GeneralesModule,
     AfiliadosModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
