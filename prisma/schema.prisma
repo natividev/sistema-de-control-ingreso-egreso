@@ -96,7 +96,7 @@ enum TipoLog {
 
 model total_log {
   id             Int      @id @default(autoincrement())
-  fecha          DateTime @default(now())
+  fecha          DateTime @default(dbgenerated("NOW()")) @db.DateTime
   monto_ingreso  Float    @default(0)
   monto_anterior Float
   monto_nuevo    Float
