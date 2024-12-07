@@ -9,4 +9,9 @@ export class DashboardController {
   async ingresoEgreso() {
     return await this.dashboardService.ingresoEgreso();
   }
+
+  @Get('ingreso-grafica-linea')
+  async ingresoGraficaLinea() {
+    return await this.dashboardService.ingresoGraficaLinea();
+  }
 }

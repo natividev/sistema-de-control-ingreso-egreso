@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DashboardRepository {
@@ -16,22 +17,33 @@ export class DashboardRepository {
     return { ingreso, egreso };
   }
 
-  //funcion privada
+  async ingresoGraficaLinea() {
+    return await this.getIngreso();
+  }
+
   private async getIngreso() {
-    return await this.prisma.ingreso.findMany({
-      select: {
-        fecha_actividad: true,
-        cantidad: true,
-      },
-    });
+    const query = Prisma.sql`select
+        DATE_FORMAT(i.fecha_actividad, '%Y-%m-%d') as fecha_actividad,
+        SUM(i.cantidad) as cantidad 
+      from
+        ingreso i
+      GROUP BY i.fecha_actividad`;
+
+    return await this.prisma.$queryRaw<any>(query);
   }
 
   private async getEgreso() {
-    return await this.prisma.egreso.findMany({
-      select: {
-        fecha_actividad: true,
-        cantidad: true,
-      },
+    const query = Prisma.sql`select
+        DATE_FORMAT(e.fecha_actividad, '%Y-%m-%d') as fecha_actividad,
+        SUM(e.cantidad) as cantidad
+      from
+        egreso e
+      GROUP BY e.fecha_actividad`;
+
+    const data = await this.prisma.$queryRaw<any>(query);
+
+    return data.map((item) => {
+      return { ...item, cantidad: item.cantidad * -1 };
     });
   }
 }

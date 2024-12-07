@@ -8,4 +8,8 @@ export class DashboardService {
   async ingresoEgreso() {
     return this.dashboardRepository.ingresoEgreso();
   }
+
+  async ingresoGraficaLinea() {
+    return this.dashboardRepository.ingresoGraficaLinea();
+  }
 }
