@@ -143,3 +143,67 @@ model registro_afiliado {
   ingreso   ingreso[]
   egreso    egreso[]
 }
+
+model proyecto {
+  id                       Int      @id @default(autoincrement())
+  nombre                   String
+  fecha                    DateTime @db.Date
+  ubicacion                Json?
+  cantidad                 Float
+  observacion              String?
+  tipo_participante        Json?
+  fk_categoria_proyecto_id Int
+
+  observaciones String?
+  active        Boolean @default(true)
+
+  fecha_creacion      DateTime @default(dbgenerated("NOW()")) @db.DateTime
+  fecha_actualizacion DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.DateTime
+
+  aporte_proyecto    aporte_proyecto[]
+  categoria_proyecto categoria_proyecto @relation(fields: [fk_categoria_proyecto_id], references: [id])
+
+  @@index([fk_categoria_proyecto_id], name: "proyecto_fk_categoria_idx")
+}
+
+model categoria_proyecto {
+  id          Int     @id @default(autoincrement())
+  nombre      String  @unique
+  descripcion String?
+  active      Boolean @default(true)
+
+  proyectos proyecto[]
+}
+
+model tipo_participante {
+  id     Int     @id @default(autoincrement())
+  nombre String
+  active Boolean @default(true)
+}
+
+model aporte_proyecto {
+  id                Int      @id @default(autoincrement())
+  fecha             DateTime @db.Date
+  nombre_persona    String
+  fk_proyecto_id    Int
+  fk_tipo_aporte_id Int
+  cantidad          String
+  observaciones     String?
+  active            Boolean  @default(true)
+
+  fecha_creacion      DateTime @default(dbgenerated("NOW()")) @db.DateTime
+  fecha_actualizacion DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.DateTime
+
+  proyecto    proyecto    @relation(fields: [fk_proyecto_id], references: [id])
+  tipo_aporte tipo_aporte @relation(fields: [fk_tipo_aporte_id], references: [id])
+
+  @@index([fk_proyecto_id], name: "aporte_proyecto_fk_proyecto_id_idx")
+  @@index([fk_tipo_aporte_id], name: "aporte_proyecto_fk_tipo_aporte_id_idx")
+}
+
+model tipo_aporte {
+  id              Int               @id @default(autoincrement())
+  nombre          String
+  active          Boolean           @default(true)
+  aporte_proyecto aporte_proyecto[]
+}
