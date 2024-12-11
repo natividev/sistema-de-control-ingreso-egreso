@@ -10,6 +10,10 @@ import { ReportsModule } from './modules/reports/reports.module';
 import { GeneralesModule } from './modules/generales/generales.module';
 import { AfiliadosModule } from './modules/afiliados/afiliados.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { ProyectoModule } from './modules/proyecto/proyecto.module';
+import { TipoParticipanteModule } from './modules/tipo-participante/tipo-participante.module';
+import { BitacoraAportacionModule } from './modules/bitacora-aportacion/bitacora-aportacion.module';
+import { CategoriaProyectoModule } from './modules/categoria-proyecto/categoria-proyecto.module';
 
 @Module({
   imports: [
@@ -22,6 +26,10 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     GeneralesModule,
     AfiliadosModule,
     DashboardModule,
+    ProyectoModule,
+    TipoParticipanteModule,
+    BitacoraAportacionModule,
+    CategoriaProyectoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

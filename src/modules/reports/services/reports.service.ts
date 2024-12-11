@@ -138,4 +138,47 @@ export class ReportsService {
       throw new Error('Error al generar reporte ingreso');
     }
   }
+
+  async resumenDeAportacionesPorProyecto(): Promise<Buffer> {
+    try {
+      const resumenData =
+        await this._reportsRepository.resumenDeAportacionesPorProyecto();
+
+      const proyecto = resumenData.map((resumen) => {
+        return {
+          proyecto: [
+            {
+              ...resumen,
+              aportadores: undefined,
+              observacion: resumen.observacion,
+            },
+          ],
+          aportadores: resumen.aportadores,
+          tipoParticipante: resumen.tipoParticipante.join(', '),
+        };
+      });
+
+      const payload = {
+        aportador: proyecto,
+        fechaImpresion: moment().format('DD/MM/YYYY HH:mm:ss'),
+      };
+
+      console.log(JSON.stringify(payload, null, 2));
+
+      const buffer = await this._carboneService.renderPDFCarbone(
+        payload,
+        'resumen-aportaciones-por-proyecto.odt',
+        'pdf',
+      );
+
+      const bufferPDFConImage = await insertImageToDocument(buffer);
+
+      const resultBuffer = bufferPDFConImage;
+
+      return resultBuffer;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al generar reporte ingreso');
+    }
+  }
 }

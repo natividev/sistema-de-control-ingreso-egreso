@@ -7,6 +7,7 @@ import {
   IReportIngreso,
 } from '../interfaces';
 import { ParamsDto } from '../dto/params.dto';
+import { ResumenAportacionesPorProyecto } from '../interfaces/resumen.aportaciones.por.proyecto.interface';
 
 @Injectable()
 export class ReportsRepository {
@@ -116,5 +117,29 @@ export class ReportsRepository {
       ${whereConditions};`;
 
     return await this._prisma.$queryRaw<IReportGeneralIngresoEgreso[]>(query);
+  }
+
+  async resumenDeAportacionesPorProyecto(): Promise<
+    ResumenAportacionesPorProyecto[]
+  > {
+    const query = Prisma.sql`SELECT 
+        GROUP_CONCAT(DISTINCT CONCAT(ap2.nombre_persona, ' (', ap2.cantidad, ')') ORDER BY ap2.nombre_persona SEPARATOR ', ') AS aportadores,
+        p.nombre AS nombreProyecto,
+      DATE_FORMAT(p.fecha, '%Y-%m-%d') AS fechaProyecto,
+        p.observacion,
+        p.tipo_participante as tipoParticipante,
+        cp.nombre AS nombreCategoriaProyecto
+    FROM 
+        aporte_proyecto ap2
+    JOIN 
+        proyecto p ON p.id = ap2.fk_proyecto_id
+    JOIN 
+        categoria_proyecto cp ON cp.id = p.fk_categoria_proyecto_id
+    GROUP BY 
+        ap2.fk_proyecto_id, p.nombre, p.fecha, p.ubicacion, p.cantidad, p.observacion, p.tipo_participante, cp.nombre;`;
+
+    return await this._prisma.$queryRaw<ResumenAportacionesPorProyecto[]>(
+      query,
+    );
   }
 }

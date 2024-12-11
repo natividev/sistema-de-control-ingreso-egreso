@@ -49,4 +49,20 @@ export class ReportsController {
     res.end();
     return pdfBuffer;
   }
+
+  @Get('resumen-aportaciones-por-proyecto')
+  async resumenDeAportacionesPorProyecto(@Res() res: Response) {
+    const pdfBuffer =
+      await this.reportsService.resumenDeAportacionesPorProyecto();
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=resumen-aportaciones-por-proyecto.pdf',
+    );
+
+    res.send(pdfBuffer);
+    res.end();
+    return pdfBuffer;
+  }
 }
