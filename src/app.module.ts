@@ -14,6 +14,7 @@ import { ProyectoModule } from './modules/proyecto/proyecto.module';
 import { TipoParticipanteModule } from './modules/tipo-participante/tipo-participante.module';
 import { BitacoraAportacionModule } from './modules/bitacora-aportacion/bitacora-aportacion.module';
 import { CategoriaProyectoModule } from './modules/categoria-proyecto/categoria-proyecto.module';
+import { AnulacionModule } from './modules/anulacion/anulacion.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CategoriaProyectoModule } from './modules/categoria-proyecto/categoria-
     TipoParticipanteModule,
     BitacoraAportacionModule,
     CategoriaProyectoModule,
+    AnulacionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

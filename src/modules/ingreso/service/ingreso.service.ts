@@ -18,4 +18,8 @@ export class IngresoService {
       throw new Error('Error al crear ingreso');
     }
   }
+
+  async getIngreso() {
+    return await this._ingresoRepository.getIngreso();
+  }
 }

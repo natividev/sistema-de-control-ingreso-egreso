@@ -20,8 +20,21 @@ export class ProyectoRepository {
     };
   }
 
+  async updateProyecto(updateProyectoDto: ProyectoCreateData, id: number) {
+    await this.prisma.proyecto.update({
+      where: {
+        id: id,
+      },
+      data: updateProyectoDto,
+    });
+
+    return {
+      message: 'Proyecto actualizado correctamente',
+    };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async findAll({ desde, hasta, page, limit }: FilterQueryParams) {
-    // return await this.prisma.proyecto.findMany();
     const query = Prisma.sql`SELECT * from proyecto p`;
 
     return await pageBuilder(this.prisma, {

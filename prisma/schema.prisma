@@ -41,6 +41,7 @@ model ingreso {
   fk_tipo_ingreso      Int
   fk_tipo_control      Int
   fk_tipo_aportacion   Int
+  anulado              Boolean  @default(false)
   active               Boolean  @default(true)
 
   tipo_ingreso      tipo_ingreso      @relation(fields: [fk_tipo_ingreso], references: [id])
@@ -48,6 +49,7 @@ model ingreso {
   tipo_aportacion   tipo_aportacion   @relation(fields: [fk_tipo_aportacion], references: [id])
   registro_afiliado registro_afiliado @relation(fields: [id_registro_afiliado], references: [id])
   total_log         total_log[]
+  log_anulacion     log_anulacion[]
 
   @@index([fk_tipo_ingreso], name: "ingreso_tipo_ingreso")
   @@index([fk_tipo_control], name: "ingreso_tipo_control")
@@ -66,12 +68,14 @@ model egreso {
   observaciones        String?
   fk_tipo_control      Int
   fk_tipo_aportacion   Int
+  anulado              Boolean  @default(false)
   active               Boolean  @default(true)
 
   tipo_control      tipo_control      @relation(fields: [fk_tipo_control], references: [id])
   tipo_aportacion   tipo_aportacion   @relation(fields: [fk_tipo_aportacion], references: [id])
   registro_afiliado registro_afiliado @relation(fields: [id_registro_afiliado], references: [id])
   total_log         total_log[]
+  log_anulacion     log_anulacion[]
 
   @@index([fk_tipo_control], name: "egreso_tipo_control")
   @@index([fk_tipo_aportacion], name: "egreso_tipo_aportacion")
@@ -95,14 +99,16 @@ enum TipoLog {
 }
 
 model total_log {
-  id             Int      @id @default(autoincrement())
-  fecha          DateTime @default(dbgenerated("NOW()")) @db.DateTime
-  monto_ingreso  Float    @default(0)
-  monto_anterior Float
-  monto_nuevo    Float
-  tipo           TipoLog
-  fk_ingreso     Int?
-  fk_egreso      Int?
+  id              Int       @id @default(autoincrement())
+  fecha           DateTime  @default(dbgenerated("NOW()")) @db.DateTime
+  monto_ingreso   Float     @default(0)
+  monto_anterior  Float
+  monto_nuevo     Float
+  tipo            TipoLog
+  fk_ingreso      Int?
+  fk_egreso       Int?
+  fecha_anulacion DateTime? @db.Date
+  anulado         Boolean   @default(false)
 
   ingreso ingreso? @relation(fields: [fk_ingreso], references: [id])
   egreso  egreso?  @relation(fields: [fk_egreso], references: [id])
@@ -206,4 +212,27 @@ model tipo_aporte {
   nombre          String
   active          Boolean           @default(true)
   aporte_proyecto aporte_proyecto[]
+}
+
+model log_anulacion {
+  id               Int           @id @default(autoincrement())
+  fecha            DateTime      @default(dbgenerated("NOW()")) @db.DateTime
+  monto_original   Float?
+  monto_anulado    Float
+  fk_ingreso       Int?
+  fk_egreso        Int?
+  motivo_anulacion String?
+  tipo_anulacion   TipoAnulacion
+  active           Boolean       @default(true)
+
+  ingreso ingreso? @relation(fields: [fk_ingreso], references: [id])
+  egreso  egreso?  @relation(fields: [fk_egreso], references: [id])
+
+  @@index([fk_ingreso], name: "log_anulacion_fk_ingreso")
+  @@index([fk_egreso], name: "log_anulacion_fk_egreso")
+}
+
+enum TipoAnulacion {
+  INGRESO
+  EGRESO
 }

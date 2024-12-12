@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateIngresoDto } from '../dto/create-ingreso.dto';
 import { PrismaService } from 'src/prisma.service';
-import { TipoLog } from '@prisma/client';
+import { ingreso, TipoLog } from '@prisma/client';
+import pageBuilder from 'src/helpers/page-builder';
 
 @Injectable()
 export class IngresoRepository {
@@ -61,5 +62,28 @@ export class IngresoRepository {
     });
 
     return nuevoIngreso;
+  }
+
+  async getIngreso() {
+    return await pageBuilder<ingreso>(this._prisma.ingreso, {
+      limit: 10,
+      page: 1,
+      where: {
+        active: true,
+      },
+      select: {
+        id: true,
+        nombre_actividad: true,
+        fecha_actividad: true,
+        cantidad: true,
+        id_registro_afiliado: true,
+        no_transaccion: true,
+        observaciones: true,
+        fk_tipo_ingreso: true,
+        fk_tipo_control: true,
+        fk_tipo_aportacion: true,
+        active: true,
+      },
+    });
   }
 }

@@ -24,6 +24,9 @@ export class ReportsService {
         return {
           ...ingreso,
           cantidad: currencyAdapter.create(ingreso.cantidad).format(),
+          nombreActividad: ingreso.anulado
+            ? `ANULADO - ${ingreso.nombreActividad}`
+            : ingreso.nombreActividad,
         };
       });
 

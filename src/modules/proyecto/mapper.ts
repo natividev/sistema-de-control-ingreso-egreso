@@ -1,8 +1,11 @@
 import { momentAdapter } from 'src/plugins/moment.adapter';
 import { CreateProyectoDto } from './dto/create-proyecto.dto';
+import { UpdateProyectoDto } from './dto/update-proyecto.dto';
+
+type ProyectoDto = CreateProyectoDto | UpdateProyectoDto;
 
 export class ProyectoMapper {
-  static toDto(proyecto: CreateProyectoDto) {
+  static toDto(proyecto: ProyectoDto) {
     return {
       nombre: proyecto.nombre,
       fecha: momentAdapter.convertToDate(proyecto.fecha),

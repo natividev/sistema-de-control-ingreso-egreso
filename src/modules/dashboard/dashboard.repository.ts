@@ -27,6 +27,8 @@ export class DashboardRepository {
         SUM(i.cantidad) as cantidad 
       from
         ingreso i
+      where
+        i.anulado = false
       GROUP BY i.fecha_actividad`;
 
     return await this.prisma.$queryRaw<any>(query);
@@ -38,6 +40,8 @@ export class DashboardRepository {
         SUM(e.cantidad) as cantidad
       from
         egreso e
+      where
+        e.anulado = false
       GROUP BY e.fecha_actividad`;
 
     const data = await this.prisma.$queryRaw<any>(query);

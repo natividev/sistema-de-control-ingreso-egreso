@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Patch } from '@nestjs/common';
 import { ProyectoService } from './proyecto.service';
 import { CreateProyectoDto } from './dto/create-proyecto.dto';
 import { FilterQueryParams } from './dto/filter-query-params';
+import { UpdateProyectoDto } from './dto/update-proyecto.dto';
 
 @Controller('proyecto')
 export class ProyectoController {
@@ -10,6 +11,14 @@ export class ProyectoController {
   @Post()
   async create(@Body() createProyectoDto: CreateProyectoDto) {
     return await this.proyectoService.createProyecto(createProyectoDto);
+  }
+
+  @Patch()
+  async update(
+    @Body() updateProyectoDto: UpdateProyectoDto,
+    @Query('id') id: number,
+  ) {
+    return await this.proyectoService.updateProyecto(updateProyectoDto, id);
   }
 
   @Get()

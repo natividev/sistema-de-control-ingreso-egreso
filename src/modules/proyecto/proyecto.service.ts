@@ -3,6 +3,7 @@ import { ProyectoRepository } from './proyecto.repository';
 import { CreateProyectoDto } from './dto/create-proyecto.dto';
 import { ProyectoMapper } from './mapper';
 import { FilterQueryParams } from './dto/filter-query-params';
+import { UpdateProyectoDto } from './dto/update-proyecto.dto';
 
 @Injectable()
 export class ProyectoService {
@@ -11,6 +12,13 @@ export class ProyectoService {
   async createProyecto(createProyectoDto: CreateProyectoDto) {
     return await this.proyectoRepository.createProyecto(
       ProyectoMapper.toDto(createProyectoDto),
+    );
+  }
+
+  async updateProyecto(updateProyectoDto: UpdateProyectoDto, id: number) {
+    return await this.proyectoRepository.updateProyecto(
+      ProyectoMapper.toDto(updateProyectoDto),
+      id,
     );
   }
 

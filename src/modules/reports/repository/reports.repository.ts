@@ -36,7 +36,8 @@ export class ReportsRepository {
         i.observaciones,
         ti.nombre AS tipoIngreso,
         ta.nombre AS tipoAportacion,
-        tc.nombre AS tipoControl
+        tc.nombre AS tipoControl,
+        i.anulado
       FROM
         ingreso i
       INNER JOIN tipo_ingreso ti ON ti.id = i.fk_tipo_ingreso
@@ -95,7 +96,7 @@ export class ReportsRepository {
 
     if (desde && hasta) {
       whereConditions = Prisma.sql`
-        WHERE tl.fecha BETWEEN ${from} AND ${to}
+        AND tl.fecha BETWEEN ${from} AND ${to}
       `;
     }
 
@@ -114,6 +115,43 @@ export class ReportsRepository {
         i.id = tl.fk_ingreso
       LEFT JOIN egreso e ON
         e.id = tl.fk_egreso
+        WHERE i.anulado = false AND e.anulado = false
+      ${whereConditions};`;
+
+    return await this._prisma.$queryRaw<IReportGeneralIngresoEgreso[]>(query);
+  }
+
+  async reportGeneralIngresoEgresoAnulaciones({
+    desde,
+    hasta,
+  }: ParamsDto): Promise<IReportGeneralIngresoEgreso[]> {
+    let whereConditions = Prisma.sql``;
+
+    const from = `${desde} 00:00:00`;
+    const to = `${hasta} 23:59:59`;
+
+    if (desde && hasta) {
+      whereConditions = Prisma.sql`
+        AND tl.fecha BETWEEN ${from} AND ${to}
+      `;
+    }
+
+    const query = Prisma.sql`SELECT
+        tl.id,
+        DATE_FORMAT(tl.fecha, '%Y-%m-%d') AS fecha,
+        tl.monto_anterior AS montoAnterior,
+        tl.monto_nuevo AS montoNuevo,
+        tl.monto_ingreso AS montoIngreso,
+        tl.tipo,
+        i.nombre_actividad AS actividadIngreso,
+        e.nombre_actividad  AS actividadEgreso
+      from
+        total_log tl
+      LEFT JOIN ingreso i ON
+        i.id = tl.fk_ingreso
+      LEFT JOIN egreso e ON
+        e.id = tl.fk_egreso
+        WHERE i.anulado = true AND e.anulado = true
       ${whereConditions};`;
 
     return await this._prisma.$queryRaw<IReportGeneralIngresoEgreso[]>(query);
