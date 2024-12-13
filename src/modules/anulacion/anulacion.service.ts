@@ -25,4 +25,25 @@ export class AnulacionService {
       message: `Anulación realizada correctamente`,
     };
   }
+
+  async anulacionEgreso({ id, monto, motivo }: CreateAnulacionDto) {
+    const { cantidad } = await this.anulacionRepository.getEgresoById(id);
+    console.log(cantidad);
+
+    if (monto > cantidad) {
+      throw new BadRequestException(
+        'El monto de anulación no puede ser mayor al monto ingresado',
+      );
+    }
+
+    await this.anulacionRepository.anularEgreso(id, monto, motivo);
+
+    // if (monto === cantidad) {
+    //   await this.anulacionRepository.liquidacionConAnulacionEgreso(id);
+    // }
+
+    return {
+      message: `Anulación realizada correctamente`,
+    };
+  }
 }

@@ -61,6 +61,52 @@ export class AnulacionRepository {
     });
   }
 
+  // TODO: ANULACIÓN EGRESO
+  async anularEgreso(id: number, monto: number, motivo: string) {
+    const egreso = await this.getEgresoById(id);
+
+    await this.prisma.egreso.update({
+      where: {
+        id: id,
+      },
+      data: {
+        cantidad: egreso.cantidad - monto,
+      },
+    });
+
+    await this.prisma.log_anulacion.create({
+      data: {
+        monto_original: egreso.cantidad,
+        monto_anulado: monto,
+        fk_egreso: id,
+        tipo_anulacion: 'EGRESO',
+        motivo_anulacion: motivo,
+        active: true,
+      },
+    });
+
+    const totalOperativoDeEgreso = await this.getTotalEgreso();
+    const totalIngreso = await this.getTotalIngreso();
+
+    await this.prisma.total_egreso.update({
+      where: {
+        id: 1,
+      },
+      data: {
+        monto: totalOperativoDeEgreso.monto - monto,
+      },
+    });
+
+    await this.prisma.total_ingreso.update({
+      where: {
+        id: 1,
+      },
+      data: {
+        monto: totalIngreso.monto + monto,
+      },
+    });
+  }
+
   async getIngresoById(id: number) {
     return await this.prisma.ingreso.findUnique({
       where: {
@@ -85,6 +131,17 @@ export class AnulacionRepository {
 
   private async getTotalIngreso() {
     return await this.prisma.total_ingreso.findUnique({
+      where: {
+        id: 1,
+      },
+      select: {
+        monto: true,
+      },
+    });
+  }
+
+  private async getTotalEgreso() {
+    return await this.prisma.total_egreso.findUnique({
       where: {
         id: 1,
       },

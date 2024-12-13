@@ -10,4 +10,9 @@ export class AnulacionController {
   anulacionIngreso(@Body() createAnulacionDto: CreateAnulacionDto) {
     return this.anulacionService.anulacionIngreso(createAnulacionDto);
   }
+
+  @Post('egreso')
+  anulacionEgreso(@Body() createAnulacionDto: CreateAnulacionDto) {
+    return this.anulacionService.anulacionEgreso(createAnulacionDto);
+  }
 }
