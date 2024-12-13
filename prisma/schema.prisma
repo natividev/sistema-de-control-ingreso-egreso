@@ -39,17 +39,19 @@ model ingreso {
   no_transaccion       String?
   observaciones        String?
   fk_tipo_ingreso      Int
+  fk_tipo_afiliado     Int
   fk_tipo_control      Int
   fk_tipo_aportacion   Int
   anulado              Boolean  @default(false)
   active               Boolean  @default(true)
 
-  tipo_ingreso      tipo_ingreso      @relation(fields: [fk_tipo_ingreso], references: [id])
-  tipo_control      tipo_control      @relation(fields: [fk_tipo_control], references: [id])
-  tipo_aportacion   tipo_aportacion   @relation(fields: [fk_tipo_aportacion], references: [id])
-  registro_afiliado registro_afiliado @relation(fields: [id_registro_afiliado], references: [id])
-  total_log         total_log[]
-  log_anulacion     log_anulacion[]
+  tipo_ingreso               tipo_ingreso      @relation(fields: [fk_tipo_ingreso], references: [id])
+  tipo_control               tipo_control      @relation(fields: [fk_tipo_control], references: [id])
+  tipo_aportacion            tipo_aportacion   @relation(fields: [fk_tipo_aportacion], references: [id])
+  registro_afiliado          registro_afiliado @relation(fields: [id_registro_afiliado], references: [id])
+  registro_afiliado_afiliado afiliados         @relation(fields: [fk_tipo_afiliado], references: [id])
+  total_log                  total_log[]
+  log_anulacion              log_anulacion[]
 
   @@index([fk_tipo_ingreso], name: "ingreso_tipo_ingreso")
   @@index([fk_tipo_control], name: "ingreso_tipo_control")
@@ -68,12 +70,14 @@ model egreso {
   observaciones        String?
   fk_tipo_control      Int
   fk_tipo_aportacion   Int
+  fk_tipo_afiliado     Int
   anulado              Boolean  @default(false)
   active               Boolean  @default(true)
 
   tipo_control      tipo_control      @relation(fields: [fk_tipo_control], references: [id])
   tipo_aportacion   tipo_aportacion   @relation(fields: [fk_tipo_aportacion], references: [id])
   registro_afiliado registro_afiliado @relation(fields: [id_registro_afiliado], references: [id])
+  tipo_afiliado     afiliados         @relation(fields: [fk_tipo_afiliado], references: [id])
   total_log         total_log[]
   log_anulacion     log_anulacion[]
 
@@ -122,6 +126,8 @@ model afiliados {
   descripcion       String
   active            Boolean             @default(true)
   registro_afiliado registro_afiliado[]
+  egreso            egreso[]
+  ingreso           ingreso[]
 }
 
 model tipo_documento {

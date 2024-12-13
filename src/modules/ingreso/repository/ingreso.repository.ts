@@ -3,6 +3,9 @@ import { CreateIngresoDto } from '../dto/create-ingreso.dto';
 import { PrismaService } from 'src/prisma.service';
 import { ingreso, TipoLog } from '@prisma/client';
 import pageBuilder from 'src/helpers/page-builder';
+import { FilterQueryParams } from 'src/modules/proyecto/dto/filter-query-params';
+import { UpdateIngresoDto } from '../dto/update-ingreso.dto';
+import * as moment from 'moment';
 
 @Injectable()
 export class IngresoRepository {
@@ -18,6 +21,7 @@ export class IngresoRepository {
     noTransaccion,
     observaciones,
     idAfiliado,
+    fkTipoAfiliado,
   }: CreateIngresoDto) {
     const nuevoIngreso = await this._prisma.ingreso.create({
       data: {
@@ -30,6 +34,7 @@ export class IngresoRepository {
         fk_tipo_ingreso: fkTipoIngreso,
         fk_tipo_control: fkTipoControl,
         fk_tipo_aportacion: fkTipoAportacion,
+        fk_tipo_afiliado: fkTipoAfiliado,
       },
     });
 
@@ -64,10 +69,13 @@ export class IngresoRepository {
     return nuevoIngreso;
   }
 
-  async getIngreso() {
+  async getIngreso({ limit, page, desde, hasta }: FilterQueryParams) {
+    const desdeF = moment(desde).format('YYYY-MM-DD HH:mm:ss');
+    const hastaF = moment(hasta).format('YYYY-MM-DD HH:mm:ss');
+    console.log(desdeF, hastaF);
     return await pageBuilder<ingreso>(this._prisma.ingreso, {
-      limit: 10,
-      page: 1,
+      limit,
+      page,
       where: {
         active: true,
       },
@@ -79,11 +87,35 @@ export class IngresoRepository {
         id_registro_afiliado: true,
         no_transaccion: true,
         observaciones: true,
+        anulado: true,
         fk_tipo_ingreso: true,
         fk_tipo_control: true,
         fk_tipo_aportacion: true,
+        fk_tipo_afiliado: true,
         active: true,
       },
     });
+  }
+
+  async updateIngreso(id: number, updateIngresoDto: UpdateIngresoDto) {
+    await this._prisma.ingreso.update({
+      where: {
+        id: id,
+      },
+      data: {
+        nombre_actividad: updateIngresoDto.nombreActividad,
+        fecha_actividad: updateIngresoDto.fechaActividad,
+        id_registro_afiliado: updateIngresoDto.idAfiliado,
+        no_transaccion: updateIngresoDto.noTransaccion,
+        observaciones: updateIngresoDto.observaciones,
+        fk_tipo_ingreso: updateIngresoDto.fkTipoIngreso,
+        fk_tipo_control: updateIngresoDto.fkTipoControl,
+        fk_tipo_aportacion: updateIngresoDto.fkTipoAportacion,
+      },
+    });
+
+    return {
+      message: 'Ingreso actualizado correctamente',
+    };
   }
 }

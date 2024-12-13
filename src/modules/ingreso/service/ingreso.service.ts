@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CreateIngresoDto } from '../dto/create-ingreso.dto';
 import { IngresoRepository } from '../repository/ingreso.repository';
+import { FilterQueryParams } from 'src/modules/proyecto/dto/filter-query-params';
+import { UpdateIngresoDto } from '../dto/update-ingreso.dto';
 
 @Injectable()
 export class IngresoService {
@@ -19,7 +21,19 @@ export class IngresoService {
     }
   }
 
-  async getIngreso() {
-    return await this._ingresoRepository.getIngreso();
+  async updateIngreso(id: number, updateIngresoDto: UpdateIngresoDto) {
+    try {
+      return await this._ingresoRepository.updateIngreso(id, updateIngresoDto);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof UnprocessableEntityException) {
+        throw error;
+      }
+      throw new Error(`Error al actualizar ingreso: ${error}`);
+    }
+  }
+
+  async getIngreso(filterQueryParams: FilterQueryParams) {
+    return await this._ingresoRepository.getIngreso(filterQueryParams);
   }
 }

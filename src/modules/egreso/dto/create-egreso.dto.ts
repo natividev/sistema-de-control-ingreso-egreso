@@ -38,4 +38,8 @@ export class CreateEgresoDto {
   @IsNotEmpty()
   @IsInt()
   fkTipoAportacion: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  fkTipoAfiliado: number;
 }

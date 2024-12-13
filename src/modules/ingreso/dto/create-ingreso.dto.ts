@@ -43,4 +43,8 @@ export class CreateIngresoDto {
   @IsNotEmpty()
   @IsInt()
   fkTipoAportacion: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  fkTipoAfiliado: number;
 }
