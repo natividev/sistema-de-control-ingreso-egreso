@@ -38,9 +38,9 @@ export class AnulacionService {
 
     await this.anulacionRepository.anularEgreso(id, monto, motivo);
 
-    // if (monto === cantidad) {
-    //   await this.anulacionRepository.liquidacionConAnulacionEgreso(id);
-    // }
+    if (monto === cantidad) {
+      await this.anulacionRepository.liquidacionConAnulacionEgreso(id);
+    }
 
     return {
       message: `Anulación realizada correctamente`,

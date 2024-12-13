@@ -71,7 +71,8 @@ export class ReportsRepository {
         e.no_transaccion as noTransaccion,
         e.observaciones,
         ta.nombre as tipoAportacion,
-        tc.nombre as tipoControl
+        tc.nombre as tipoControl,
+        e.anulado
       FROM
         egreso e
       INNER JOIN tipo_aportacion ta ON

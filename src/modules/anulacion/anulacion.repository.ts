@@ -26,6 +26,27 @@ export class AnulacionRepository {
     });
   }
 
+  async liquidacionConAnulacionEgreso(id: number) {
+    await this.prisma.egreso.update({
+      where: {
+        id: id,
+      },
+      data: {
+        anulado: true,
+      },
+    });
+
+    await this.prisma.total_log.updateMany({
+      where: {
+        fk_egreso: id,
+      },
+      data: {
+        anulado: true,
+        fecha_anulacion: new Date(),
+      },
+    });
+  }
+
   async anularIngreso(id: number, monto: number, motivo: string) {
     const ingreso = await this.getIngresoById(id);
 
