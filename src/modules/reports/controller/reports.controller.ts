@@ -51,9 +51,12 @@ export class ReportsController {
   }
 
   @Get('resumen-aportaciones-por-proyecto')
-  async resumenDeAportacionesPorProyecto(@Res() res: Response) {
+  async resumenDeAportacionesPorProyecto(
+    @Res() res: Response,
+    @Query() params: ParamsDto,
+  ) {
     const pdfBuffer =
-      await this.reportsService.resumenDeAportacionesPorProyecto();
+      await this.reportsService.resumenDeAportacionesPorProyecto(params);
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader(

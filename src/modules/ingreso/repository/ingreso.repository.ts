@@ -5,7 +5,6 @@ import { ingreso, TipoLog } from '@prisma/client';
 import pageBuilder from 'src/helpers/page-builder';
 import { FilterQueryParams } from 'src/modules/proyecto/dto/filter-query-params';
 import { UpdateIngresoDto } from '../dto/update-ingreso.dto';
-import * as moment from 'moment';
 
 @Injectable()
 export class IngresoRepository {
@@ -69,10 +68,7 @@ export class IngresoRepository {
     return nuevoIngreso;
   }
 
-  async getIngreso({ limit, page, desde, hasta }: FilterQueryParams) {
-    const desdeF = moment(desde).format('YYYY-MM-DD HH:mm:ss');
-    const hastaF = moment(hasta).format('YYYY-MM-DD HH:mm:ss');
-    console.log(desdeF, hastaF);
+  async getIngreso({ limit, page }: FilterQueryParams) {
     return await pageBuilder<ingreso>(this._prisma.ingreso, {
       limit,
       page,

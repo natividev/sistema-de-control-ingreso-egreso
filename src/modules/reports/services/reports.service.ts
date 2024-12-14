@@ -48,7 +48,6 @@ export class ReportsService {
 
       return resultBuffer;
     } catch (error) {
-      console.log(error);
       throw new Error('Error al generar reporte ingreso');
     }
   }
@@ -88,7 +87,6 @@ export class ReportsService {
 
       return resultBuffer;
     } catch (error) {
-      console.log(error);
       throw new Error('Error al generar reporte ingreso');
     }
   }
@@ -140,15 +138,14 @@ export class ReportsService {
 
       return resultBuffer;
     } catch (error) {
-      console.log(error);
       throw new Error('Error al generar reporte ingreso');
     }
   }
 
-  async resumenDeAportacionesPorProyecto(): Promise<Buffer> {
+  async resumenDeAportacionesPorProyecto(params: ParamsDto): Promise<Buffer> {
     try {
       const resumenData =
-        await this._reportsRepository.resumenDeAportacionesPorProyecto();
+        await this._reportsRepository.resumenDeAportacionesPorProyecto(params);
 
       const proyecto = resumenData.map((resumen) => {
         return {
@@ -169,8 +166,6 @@ export class ReportsService {
         fechaImpresion: moment().format('DD/MM/YYYY HH:mm:ss'),
       };
 
-      console.log(JSON.stringify(payload, null, 2));
-
       const buffer = await this._carboneService.renderPDFCarbone(
         payload,
         'resumen-aportaciones-por-proyecto.odt',
@@ -183,7 +178,6 @@ export class ReportsService {
 
       return resultBuffer;
     } catch (error) {
-      console.log(error);
       throw new Error('Error al generar reporte ingreso');
     }
   }

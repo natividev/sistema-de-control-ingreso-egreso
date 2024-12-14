@@ -16,7 +16,6 @@ export class IngresoService {
         message: 'Ingreso creado correctamente',
       };
     } catch (error) {
-      console.log(error);
       throw new Error('Error al crear ingreso');
     }
   }
@@ -25,7 +24,6 @@ export class IngresoService {
     try {
       return await this._ingresoRepository.updateIngreso(id, updateIngresoDto);
     } catch (error) {
-      console.log(error);
       if (error instanceof UnprocessableEntityException) {
         throw error;
       }

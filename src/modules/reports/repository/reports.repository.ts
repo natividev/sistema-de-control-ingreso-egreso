@@ -158,9 +158,18 @@ export class ReportsRepository {
     return await this._prisma.$queryRaw<IReportGeneralIngresoEgreso[]>(query);
   }
 
-  async resumenDeAportacionesPorProyecto(): Promise<
-    ResumenAportacionesPorProyecto[]
-  > {
+  async resumenDeAportacionesPorProyecto({
+    desde,
+    hasta,
+  }: ParamsDto): Promise<ResumenAportacionesPorProyecto[]> {
+    let whereConditions = Prisma.sql``;
+
+    if (desde && hasta) {
+      whereConditions = Prisma.sql`
+        WHERE p.fecha BETWEEN ${desde} AND ${hasta}
+      `;
+    }
+
     const query = Prisma.sql`SELECT 
         GROUP_CONCAT(DISTINCT CONCAT(ap2.nombre_persona, ' (', ap2.cantidad, ')') ORDER BY ap2.nombre_persona SEPARATOR ', ') AS aportadores,
         p.nombre AS nombreProyecto,
@@ -174,6 +183,7 @@ export class ReportsRepository {
         proyecto p ON p.id = ap2.fk_proyecto_id
     JOIN 
         categoria_proyecto cp ON cp.id = p.fk_categoria_proyecto_id
+    ${whereConditions}
     GROUP BY 
         ap2.fk_proyecto_id, p.nombre, p.fecha, p.ubicacion, p.cantidad, p.observacion, p.tipo_participante, cp.nombre;`;
 

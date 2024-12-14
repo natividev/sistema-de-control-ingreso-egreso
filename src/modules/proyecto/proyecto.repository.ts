@@ -10,7 +10,6 @@ export class ProyectoRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async createProyecto(createProyectoDto: ProyectoCreateData) {
-    console.log(createProyectoDto);
     await this.prisma.proyecto.create({
       data: createProyectoDto,
     });

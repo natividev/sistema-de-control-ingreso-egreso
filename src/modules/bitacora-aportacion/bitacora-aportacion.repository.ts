@@ -10,7 +10,6 @@ export class BitacoraAportacionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async createBitacora(createBitacoraAportacionDto: AporteProyecto) {
-    console.log(createBitacoraAportacionDto);
     await this.prisma.aporte_proyecto.create({
       data: createBitacoraAportacionDto,
     });

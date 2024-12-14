@@ -37,15 +37,12 @@ export class GeneralesService {
       const generatedText =
         response?.response?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-      console.log(JSON.stringify(response, null, 2));
-
       if (generatedText) {
         return generatedText.trim();
       } else {
         throw new Error('Respuesta generada vacía o inválida');
       }
     } catch (error) {
-      console.log(error);
       throw new Error('Error al generar');
     }
   }

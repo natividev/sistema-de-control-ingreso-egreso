@@ -28,7 +28,6 @@ export class AnulacionService {
 
   async anulacionEgreso({ id, monto, motivo }: CreateAnulacionDto) {
     const { cantidad } = await this.anulacionRepository.getEgresoById(id);
-    console.log(cantidad);
 
     if (monto > cantidad) {
       throw new BadRequestException(

@@ -11,7 +11,6 @@ export class EgresoService {
     try {
       return await this._egresoRepository.createEgreso(createEgresoDto);
     } catch (error) {
-      console.log(error);
       if (error instanceof UnprocessableEntityException) {
         throw error;
       }
@@ -23,7 +22,6 @@ export class EgresoService {
     try {
       return await this._egresoRepository.updateEgreso(id, updateEgresoDto);
     } catch (error) {
-      console.log(error);
       if (error instanceof UnprocessableEntityException) {
         throw error;
       }
