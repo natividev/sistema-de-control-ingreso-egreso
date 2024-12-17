@@ -48,6 +48,7 @@ export class ReportsService {
 
       return resultBuffer;
     } catch (error) {
+      console.log(error);
       throw new Error('Error al generar reporte ingreso');
     }
   }
@@ -147,6 +148,8 @@ export class ReportsService {
       const resumenData =
         await this._reportsRepository.resumenDeAportacionesPorProyecto(params);
 
+      console.log(JSON.stringify(resumenData, null, 2));
+
       const proyecto = resumenData.map((resumen) => {
         return {
           proyecto: [
@@ -157,7 +160,9 @@ export class ReportsService {
             },
           ],
           aportadores: resumen.aportadores,
-          tipoParticipante: resumen.tipoParticipante.join(', '),
+          tipoParticipante: Array.isArray(resumen.tipoParticipante)
+            ? resumen.tipoParticipante.join(', ')
+            : JSON.parse(resumen.tipoParticipante).join(', '),
         };
       });
 
@@ -178,6 +183,7 @@ export class ReportsService {
 
       return resultBuffer;
     } catch (error) {
+      console.log(error);
       throw new Error('Error al generar reporte ingreso');
     }
   }

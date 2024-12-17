@@ -71,6 +71,7 @@ export class AnulacionRepository {
     });
 
     const totalOperativoDeIngreso = await this.getTotalIngreso();
+    const getTotalLogIngreso = await this.getTotalLogIngreso(id);
 
     await this.prisma.total_ingreso.update({
       where: {
@@ -78,6 +79,16 @@ export class AnulacionRepository {
       },
       data: {
         monto: totalOperativoDeIngreso.monto - monto,
+      },
+    });
+
+    await this.prisma.total_log.updateMany({
+      where: {
+        fk_ingreso: id,
+      },
+      data: {
+        monto_nuevo: getTotalLogIngreso.monto_nuevo - monto,
+        monto_ingreso: getTotalLogIngreso.monto_ingreso - monto,
       },
     });
   }
@@ -157,6 +168,18 @@ export class AnulacionRepository {
       },
       select: {
         monto: true,
+      },
+    });
+  }
+
+  private async getTotalLogIngreso(id: number) {
+    return await this.prisma.total_log.findFirst({
+      where: {
+        fk_ingreso: id,
+      },
+      select: {
+        monto_nuevo: true,
+        monto_ingreso: true,
       },
     });
   }

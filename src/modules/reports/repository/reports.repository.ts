@@ -116,7 +116,7 @@ export class ReportsRepository {
         i.id = tl.fk_ingreso
       LEFT JOIN egreso e ON
         e.id = tl.fk_egreso
-        WHERE i.anulado = false AND e.anulado = false
+        WHERE i.anulado = false OR e.anulado = false
       ${whereConditions};`;
 
     return await this._prisma.$queryRaw<IReportGeneralIngresoEgreso[]>(query);
