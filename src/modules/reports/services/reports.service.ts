@@ -48,7 +48,6 @@ export class ReportsService {
 
       return resultBuffer;
     } catch (error) {
-      console.log(error);
       throw new Error('Error al generar reporte ingreso');
     }
   }
@@ -183,7 +182,6 @@ export class ReportsService {
 
       return resultBuffer;
     } catch (error) {
-      console.log(error);
       throw new Error('Error al generar reporte ingreso');
     }
   }

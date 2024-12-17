@@ -49,47 +49,48 @@ export class AnulacionRepository {
 
   async anularIngreso(id: number, monto: number, motivo: string) {
     const ingreso = await this.getIngresoById(id);
-
-    await this.prisma.ingreso.update({
-      where: {
-        id: id,
-      },
-      data: {
-        cantidad: ingreso.cantidad - monto,
-      },
-    });
-
-    await this.prisma.log_anulacion.create({
-      data: {
-        monto_original: ingreso.cantidad,
-        monto_anulado: monto,
-        fk_ingreso: id,
-        tipo_anulacion: 'INGRESO',
-        motivo_anulacion: motivo,
-        active: true,
-      },
-    });
-
     const totalOperativoDeIngreso = await this.getTotalIngreso();
     const getTotalLogIngreso = await this.getTotalLogIngreso(id);
 
-    await this.prisma.total_ingreso.update({
-      where: {
-        id: 1,
-      },
-      data: {
-        monto: totalOperativoDeIngreso.monto - monto,
-      },
-    });
+    await this.prisma.$transaction(async (prisma) => {
+      await prisma.ingreso.update({
+        where: {
+          id: id,
+        },
+        data: {
+          cantidad: ingreso.cantidad - monto,
+        },
+      });
 
-    await this.prisma.total_log.updateMany({
-      where: {
-        fk_ingreso: id,
-      },
-      data: {
-        monto_nuevo: getTotalLogIngreso.monto_nuevo - monto,
-        monto_ingreso: getTotalLogIngreso.monto_ingreso - monto,
-      },
+      await prisma.log_anulacion.create({
+        data: {
+          monto_original: ingreso.cantidad,
+          monto_anulado: monto,
+          fk_ingreso: id,
+          tipo_anulacion: 'INGRESO',
+          motivo_anulacion: motivo,
+          active: true,
+        },
+      });
+
+      await prisma.total_ingreso.update({
+        where: {
+          id: 1,
+        },
+        data: {
+          monto: totalOperativoDeIngreso.monto - monto,
+        },
+      });
+
+      await prisma.total_log.updateMany({
+        where: {
+          fk_ingreso: id,
+        },
+        data: {
+          monto_nuevo: getTotalLogIngreso.monto_nuevo - monto,
+          monto_ingreso: getTotalLogIngreso.monto_ingreso - monto,
+        },
+      });
     });
   }
 
