@@ -5,6 +5,7 @@ interface EnvVars {
   PORT: number;
   DATABASE_URL: string;
   API_KEY_GOOGLE_GEMINI: string;
+  JWT_SECRET: string;
 }
 
 const envsSchema = joi
@@ -12,6 +13,7 @@ const envsSchema = joi
     PORT: joi.number().required(),
     DATABASE_URL: joi.string().required(),
     API_KEY_GOOGLE_GEMINI: joi.string().required(),
+    JWT_SECRET: joi.string().required(),
   })
   .unknown(true);
 
@@ -27,4 +29,5 @@ export const envs = {
   port: envsVars.PORT,
   databaseUrl: envsVars.DATABASE_URL,
   apiKeyGoogleGemini: envsVars.API_KEY_GOOGLE_GEMINI,
+  jwtSecret: envsVars.JWT_SECRET,
 };
