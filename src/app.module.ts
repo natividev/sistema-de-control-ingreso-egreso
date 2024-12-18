@@ -16,6 +16,7 @@ import { BitacoraAportacionModule } from './modules/bitacora-aportacion/bitacora
 import { CategoriaProyectoModule } from './modules/categoria-proyecto/categoria-proyecto.module';
 import { AnulacionModule } from './modules/anulacion/anulacion.module';
 import { TimelineModule } from './modules/timeline/timeline.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TimelineModule } from './modules/timeline/timeline.module';
     CategoriaProyectoModule,
     AnulacionModule,
     TimelineModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

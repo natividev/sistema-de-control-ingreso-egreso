@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { AfiliadosService } from './afiliados.service';
 import { CreateAfiliadoDto } from './dto/create-afiliado.dto';
 import { UpdateAfiliadoDto } from './dto/update-afiliado.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('afiliados')
+@UseGuards(JwtAuthGuard)
 export class AfiliadosController {
   constructor(private readonly afiliadosService: AfiliadosService) {}
 
