@@ -21,6 +21,10 @@ export class AuthService {
 
     const isValid = await bcrypt.compare(password, user.password);
 
+    if (!user) {
+      return null;
+    }
+
     if (user && isValid) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
@@ -39,6 +43,7 @@ export class AuthService {
     }
 
     const validateUser = await this.validateUser(user.usuario, user.password);
+
     if (!validateUser) {
       return {
         message: 'Usuario o contraseña incorrectos',
@@ -60,6 +65,18 @@ export class AuthService {
   }
 
   async register({ password, usuario, nombre }: CreateAuthDto) {
+    const existingUser = await this.prisma.user.findUnique({
+      where: {
+        usuario,
+      },
+    });
+
+    if (existingUser) {
+      return {
+        message: 'El usuario ya existe',
+      };
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
