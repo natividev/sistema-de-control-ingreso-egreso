@@ -16,6 +16,9 @@ import { BitacoraAportacionModule } from './modules/bitacora-aportacion/bitacora
 import { CategoriaProyectoModule } from './modules/categoria-proyecto/categoria-proyecto.module';
 import { AnulacionModule } from './modules/anulacion/anulacion.module';
 import { TimelineModule } from './modules/timeline/timeline.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -34,8 +37,15 @@ import { TimelineModule } from './modules/timeline/timeline.module';
     CategoriaProyectoModule,
     AnulacionModule,
     TimelineModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
