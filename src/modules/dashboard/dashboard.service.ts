@@ -12,4 +12,8 @@ export class DashboardService {
   async ingresoGraficaLinea() {
     return this.dashboardRepository.ingresoGraficaLinea();
   }
+
+  async getTotalesGlobales() {
+    return await this.dashboardRepository.getTotalesGlobales();
+  }
 }

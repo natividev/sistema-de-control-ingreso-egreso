@@ -50,4 +50,32 @@ export class DashboardRepository {
       return { ...item, cantidad: item.cantidad * -1 };
     });
   }
+
+  async getTotalesGlobales() {
+    const [ingreso, egreso] = await Promise.all([
+      this.totalGlobalIngreso(),
+      this.totalGlobalegreso(),
+    ]);
+
+    return {
+      ingreso,
+      egreso,
+    };
+  }
+
+  private async totalGlobalIngreso() {
+    return await this.prisma.total_ingreso.findFirst({
+      select: {
+        monto: true,
+      },
+    });
+  }
+
+  private async totalGlobalegreso() {
+    return await this.prisma.total_egreso.findFirst({
+      select: {
+        monto: true,
+      },
+    });
+  }
 }
