@@ -14,4 +14,9 @@ export class DashboardController {
   async ingresoGraficaLinea() {
     return await this.dashboardService.ingresoGraficaLinea();
   }
+
+  @Get('total-globales')
+  async getTotalesGlobales() {
+    return await this.dashboardService.getTotalesGlobales();
+  }
 }

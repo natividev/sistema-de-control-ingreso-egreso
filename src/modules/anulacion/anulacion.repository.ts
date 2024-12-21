@@ -97,6 +97,7 @@ export class AnulacionRepository {
   // TODO: ANULACIÓN EGRESO
   async anularEgreso(id: number, monto: number, motivo: string) {
     const egreso = await this.getEgresoById(id);
+    // const getTotalLogEgreso = await this.getTotalLogEgreso(id);
 
     await this.prisma.egreso.update({
       where: {
@@ -138,6 +139,16 @@ export class AnulacionRepository {
         monto: totalIngreso.monto + monto,
       },
     });
+
+    // await this.prisma.total_log.updateMany({
+    //   where: {
+    //     fk_egreso: id,
+    //   },
+    //   data: {
+    //     monto_nuevo: getTotalLogEgreso.monto_nuevo - monto,
+    //     monto_ingreso: getTotalLogEgreso.monto_ingreso - monto,
+    //   },
+    // });
   }
 
   async getIngresoById(id: number) {
@@ -177,6 +188,18 @@ export class AnulacionRepository {
     return await this.prisma.total_log.findFirst({
       where: {
         fk_ingreso: id,
+      },
+      select: {
+        monto_nuevo: true,
+        monto_ingreso: true,
+      },
+    });
+  }
+
+  private async getTotalLogEgreso(id: number) {
+    return await this.prisma.total_log.findFirst({
+      where: {
+        fk_egreso: id,
       },
       select: {
         monto_nuevo: true,

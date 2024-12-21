@@ -12,6 +12,7 @@ import { CreateAfiliadoDto } from './dto/create-afiliado.dto';
 import { UpdateAfiliadoDto } from './dto/update-afiliado.dto';
 
 @Controller('afiliados')
+// @UseGuards(JwtAuthGuard)
 export class AfiliadosController {
   constructor(private readonly afiliadosService: AfiliadosService) {}
 
