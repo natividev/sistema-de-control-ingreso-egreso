@@ -37,22 +37,23 @@ export class AuthService {
     const usuario = await this.getUserById(user.usuario);
 
     if (!usuario) {
-      return {
-        message: 'Usuario o contraseña incorrectos',
-      };
+      throw new Error('Usuario no encontrado');
     }
 
     const validateUser = await this.validateUser(user.usuario, user.password);
 
     if (!validateUser) {
-      return {
-        message: 'Usuario o contraseña incorrectos',
-      };
+      throw new Error('Usuario o contraseña incorrectos');
     }
 
     const payload = { sub: usuario.id, username: user.usuario };
     return {
       access_token: this.jwtService.sign(payload),
+      user: {
+        id: user.id,
+        name: usuario.nombre,
+        username: usuario.usuario,
+      },
     };
   }
 
